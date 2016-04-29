@@ -17,9 +17,9 @@ class ContactInfo(object):
 
         """
         
-        self.name = _name
-        self.number = _number
-        self.email = _email
+        self.name = name
+        self.number = number
+        self.email = email
 
     def __str__(self):
         """ String summary of contact """
