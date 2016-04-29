@@ -6,8 +6,29 @@ Parse a business card for name, phone number and email
 """
 class BusinessCardParser(object):
 
+    email_regex = re.compile('[^@]+@[^@]+\.[^@]+')
+
+    # american phone numbers
+    phone_regex = re.compile('1?\s?\(?\d{3}\D{0,3}\d{3}\D{0,3}\d{4}')
+
+    # positive/negative indicators of a primary phone number
+    phone_features = {
+        'tel':1,
+        'telephone':1,
+        'phone':1,
+        'office':1,
+        'work':1,
+        'p':1,     # shorthand for phone
+        'number':1,
+        'direct':1,
+        'fax':-1,
+        'cell':-1,
+        'home':-1,
+        'f':-1,       # shorthand for fax
+        'mobile':-1
+    }
+
     def __init__(self):
-        self.email_regex = re.compile(r'[^@]+@[^@]+\.[^@]+')
         pass
 
     def getContactInfo(self,document):
@@ -28,7 +49,8 @@ class BusinessCardParser(object):
         name = None
         number = None
         email = None
-
+        potential_numbers = []
+        
         # iterate through each line, checking for one of three matches
         for line in document.split("\n"):
 
@@ -42,13 +64,38 @@ class BusinessCardParser(object):
             if email is None:
                 email = self._getEmail(line)
 
-            if number is None:
-                number = self._getNumber(line)
+            #store all found numbers and the line as context
+            number = self._getNumber(line)
+            if number is not None:
+                potential_numbers.append((number,line))
+
+        # pick the best found number based on the whole line as context
+        best_score = -1
+        for num, line in potential_numbers:
+            score = self._score_line_with_number(line)
+            if score > best_score:
+                number = num
+                best_score = score
 
         return ContactInfo(name,number,email)
 
     
-    
+    def _score_line_with_number(self,line):
+        """ Score a line as likely being a work number"
+
+        Args:
+            line (str): A line containing a matched number
+
+        Returns:
+            score (float): positive if line is likely a work line, negative if not.
+
+        """
+        score = 0
+        for word in [word.rstrip(':.') for word in line.lower().split()]:
+            if self.phone_features.get(word):
+                score += self.phone_features[word]
+        return score
+                                           
     def _getEmail(self,line):
         """ Parse email from a line of text
 
@@ -77,7 +124,12 @@ class BusinessCardParser(object):
         Returns:
             number (str): extracted number string, None if no match found
         """
-        return None
+        m = re.search(self.phone_regex,line)
+        if m is not None:
+            return m.group(0)
+        else:
+            return None
+
 
     def _getName(self,line):
         """ Parse first and last name from a line of text

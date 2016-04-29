@@ -15,6 +15,7 @@ for fn in argv[1:]:
     try:
         with open(fn) as f:
             text = f.read()
+            print text
             info = parser.getContactInfo(text)
 
             if info.getName() is None:
