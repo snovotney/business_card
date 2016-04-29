@@ -1,2 +1,2 @@
-from BusinessCardParser import ContactInfo
 from BusinessCardParser import BusinessCardParser
+from ContactInfo import ContactInfo

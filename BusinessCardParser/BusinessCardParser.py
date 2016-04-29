@@ -1,13 +1,16 @@
 import ContactInfo
 
+"""
+Parse a business card for name, phone number and email
 
+"""
 class BusinessCardParser(object):
 
     def __init__(self):
-        self.contact = ContactInfo.ContactInfo()
         pass
-    
+
+    """ Return a ContactInfo object containing extracted data """
     def getContactInfo(self,document):
-        return self.contact.tmp
+        pass
 
     
