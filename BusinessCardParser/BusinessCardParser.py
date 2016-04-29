@@ -1,16 +1,17 @@
 from ContactInfo import ContactInfo
 import re
-"""
-Parse a business card for name, phone number and email
 
-"""
 class BusinessCardParser(object):
+    """
+    Parse a business card for name, phone number and email
+    
+    """
 
     email_regex = re.compile('[^@]+@[^@]+\.[^@]+')
-
+    
     # american phone numbers
-    phone_regex = re.compile('1?\s?\(?\d{3}\D{0,3}\d{3}\D{0,3}\d{4}')
-
+    phone_regex = re.compile('(1)?\s?\(?(\d{3})\D{0,3}(\d{3})\D{0,3}(\d{4})')
+    extension_regex = re.compile('(ext|x)\D?(\d{4})')
     # positive/negative indicators of a primary phone number
     phone_features = {
         'tel':1,
@@ -45,38 +46,35 @@ class BusinessCardParser(object):
             ContactInfo: object containing name, phone, email parsed from the text
         """
 
-        name_confidence = 0
+        name_score = 0
         name = None
+
+        number_score = -1
         number = None
+
         email = None
-        potential_numbers = []
         
         # iterate through each line, checking for one of three matches
         for line in document.split("\n"):
 
-            tmp_name, tmp_confidence = self._getName(line)
-            if tmp_confidence > name_confidence:
-                name_confidence = tmp_confidence
+            # update name if highest scoring so far
+            tmp_name, score = self._getName(line)
+            if score > name_score:
+                name_score = score
                 name = tmp_name
 
-
-            # if a previous line found a match, email and number will be defined
+            # skip if found email match on previous line
             if email is None:
                 email = self._getEmail(line)
 
-            #store all found numbers and the line as context
-            number = self._getNumber(line)
-            if number is not None:
-                potential_numbers.append((number,line))
-
-        # pick the best found number based on the whole line as context
-        best_score = -1
-        for num, line in potential_numbers:
-            score = self._score_line_with_number(line)
-            if score > best_score:
-                number = num
-                best_score = score
-
+            # after matching a number, score the line based on context
+            tmp_number = self._getNumber(line)
+            if tmp_number is not None:
+                score = self._score_line_with_number(line)
+                if score > number_score:
+                    number = tmp_number
+                    best_score = score
+                    
         return ContactInfo(name,number,email)
 
     
@@ -124,9 +122,20 @@ class BusinessCardParser(object):
         Returns:
             number (str): extracted number string, None if no match found
         """
+
         m = re.search(self.phone_regex,line)
         if m is not None:
-            return m.group(0)
+            number = "".join([x for x in m.groups() if x is not None])
+
+
+            m = re.search(self.extension_regex,line)
+            # found an extension
+            if m is not None:
+                ext = m.group(2)
+                number +=  " ext:" + ext
+
+            return number
+
         else:
             return None
 
