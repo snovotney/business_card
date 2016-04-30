@@ -1,8 +1,18 @@
 import pickle
 import random
-class PersonNameClassifier(object):
+class TextClassifier(object):
     """ A probabilistic classifier to determine the likelihood 
-        that a string of text is a person's name
+        that a string of text was generated from a training corpus.
+
+        This model uses a characcter language model to estimate P(w|D)
+        where w is the candidate string and D is the corpus of documents
+        provided in training.
+
+        We use a first order Markov assumption:
+
+        P(c_1,c_2,...,c_n) = sum log P(c_i | c_{i-1} )
+                          
+        The first pass uses simple bigram frequencies.
 
     """
 

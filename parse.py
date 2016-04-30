@@ -3,7 +3,6 @@
 from BusinessCardParser import BusinessCardParser, ContactInfo
 from optparse import OptionParser
 
-
 # Read in options
 usage = 'parse.py [options] file1 file2 ...'
 opt_parser = OptionParser()
