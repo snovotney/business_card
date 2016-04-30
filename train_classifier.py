@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from BusinessCardParser.TextClassifier import TextClassifier
 from optparse import OptionParser
-import mimetypes
+
 """
 Train a classifier based on training text provided in arguments and write to file
 
@@ -14,7 +14,6 @@ BOB SMITH
 
 While the input may be mixed-case, all data is mapped to lower case internally
 for this simple prototype.
-
 
 The output is a pickled object for use in parse.py.
 """

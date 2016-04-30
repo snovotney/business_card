@@ -1,5 +1,5 @@
 from ContactInfo import ContactInfo
-from PersonNameClassifier import PersonNameClassifier
+from TextClassifier import TextClassifier
 import re
 
 class BusinessCardParser(object):
@@ -40,7 +40,7 @@ class BusinessCardParser(object):
             model_file (str): path to the person name model file
 
         """
-        self.name_model = PersonNameClassifier(model_file)
+        self.name_model = TextClassifier(model_file)
         
     def getContactInfo(self,document):
         """ Extract name, email and phone number from a business card

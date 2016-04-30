@@ -1,5 +1,6 @@
 import pickle
 import random
+
 class TextClassifier(object):
     """ A probabilistic classifier to determine the likelihood 
         that a string of text was generated from a training corpus.
