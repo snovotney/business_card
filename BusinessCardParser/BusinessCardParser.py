@@ -166,6 +166,6 @@ class BusinessCardParser(object):
             name (str): first and last name
         """        
 
-        lklhd = self.name_model.compute_lklhd(line)
-        return lklhd, line
+        score = self.name_model.score(line)
+        return score, line
     

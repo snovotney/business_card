@@ -38,3 +38,4 @@ if options.model_file is None:
 classifier = TextClassifier()
 classifier.estimate_model(args)
 classifier.write_model(options.model_file)
+
