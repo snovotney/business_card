@@ -1,10 +1,26 @@
+How to run
+============
+
+./train_classifier.py -f data/name.model data/train/names.txt 
+./parse.py -m data/name.model data/tests/*
 
 
+
+Email Extraction
+================
+isn't rfc-5322 compliant
+permissive email
+
+Phone Number Extraction
+=======================
 - deals with extensions
-- assumes american #s
-- English (tel/phone)
-- isn't RFC-5322 compliant
-- returns top-most phone
+- american # only
+- returns top most phone
 
-
-http://names.mongabay.com/male_names6.htm
+Name Extraction
+===============
+- naive bayes classifier based on 4-grams
+- could use a discriminative classifier
+- could switch to a sequence model like a NN
+- move code to scipy/numpy
+- got training data

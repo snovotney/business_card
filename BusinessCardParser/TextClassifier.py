@@ -46,7 +46,7 @@ class TextClassifier(object):
             self.model = pickle.load(f)
         except IOError as e:
             print "I/O Error: ", e
-        print "Read model from ", model_file
+        print "Read model from", model_file
 
 
     def write_model(self, model_file):
@@ -63,8 +63,7 @@ class TextClassifier(object):
             pickle.dump(self.model, f)
         except IOError as e:
             print "I/O Error: ", e
-        print "Wrote model to ", model_file
-
+        print "Wrote model to", model_file
 
     def score(self, string):
         """ Compute the likelihood that a string contains a name
@@ -94,7 +93,6 @@ class TextClassifier(object):
             score += s
 
         score /= len(vector)
-        print score, string
         
         return score
 

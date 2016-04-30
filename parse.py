@@ -1,7 +1,8 @@
 #!/usr/bin/python
-
 from BusinessCardParser import BusinessCardParser, ContactInfo
 from optparse import OptionParser
+
+""" Extract name, number and email from text of business cards """
 
 # Read in options
 usage = 'parse.py [options] file1 file2 ...'
@@ -16,17 +17,28 @@ if len(args) == 0:
     opt_parser.print_help()
     exit()
 
-# Initialize parser
+if options.model_file is None:
+    print "Must pass in model file"
+    opt_parser.print_help()
+    exit()
+    
 parser = BusinessCardParser(options.model_file)
 
+print 
 # loop through business cards
 for fn in args:
     try:
         with open(fn) as f:
+
+            # extract object conforming to the ContactInfo interface
             text = f.read()
-            print text
             info = parser.getContactInfo(text)
 
+            print "Business card", fn
+            print '-' * 40
+            print text
+            print '-' * 40
+            
             if info.getName() is None:
                 print "Could not extract name from %s" % (fn)
             if info.getPhoneNumber() is None:
@@ -35,6 +47,7 @@ for fn in args:
                 print "Could not extract email from %s" % (fn)
 
             print info
+            print '-' * 40            
     except IOError as e:
         print "I/O Error: ", e
     
