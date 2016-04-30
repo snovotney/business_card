@@ -1,4 +1,5 @@
 from ContactInfo import ContactInfo
+from PersonNameClassifier import PersonNameClassifier
 import re
 
 class BusinessCardParser(object):
@@ -11,7 +12,10 @@ class BusinessCardParser(object):
     
     # american phone numbers
     phone_regex = re.compile('(1)?\s?\(?(\d{3})\D{0,3}(\d{3})\D{0,3}(\d{4})')
+
+    # basic regex to find extensions
     extension_regex = re.compile('(ext|x)\D?(\d{4})')
+
     # positive/negative indicators of a primary phone number
     phone_features = {
         'tel':1,
@@ -29,9 +33,15 @@ class BusinessCardParser(object):
         'mobile':-1
     }
 
-    def __init__(self):
-        pass
+    def __init__(self,model_file=None):
+        """ Read in a person name model file
 
+        Args:
+            model_file (str): path to the person name model file
+
+        """
+        self.name_model = PersonNameClassifier(model_file)
+        
     def getContactInfo(self,document):
         """ Extract name, email and phone number from a business card
 
@@ -58,7 +68,7 @@ class BusinessCardParser(object):
         for line in document.split("\n"):
 
             # update name if highest scoring so far
-            tmp_name, score = self._getName(line)
+            score, tmp_name = self._getName(line)
             if score > name_score:
                 name_score = score
                 name = tmp_name
@@ -141,7 +151,12 @@ class BusinessCardParser(object):
 
 
     def _getName(self,line):
-        """ Parse first and last name from a line of text
+        """ Parse first, middle and last name from a line of text
+
+            Currently the whole line is returned as the name, but could 
+        
+            The score is the per-character likelihood of the name model
+            so that longer lines are not less likely.
 
         Args:
             line (str): a line from a business card
@@ -150,5 +165,7 @@ class BusinessCardParser(object):
             confidence (float): Confidence that the line is a name
             name (str): first and last name
         """        
-        return 0, None
+
+        lklhd = self.name_model.compute_lklhd(line)
+        return lklhd, line
     
