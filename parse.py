@@ -1,17 +1,27 @@
 #!/usr/bin/python
 
 from BusinessCardParser import BusinessCardParser, ContactInfo
-from sys import argv
+from optparse import OptionParser
 
-if len(argv) == 1:
-    print "%s bc1.txt bc2.txt ..." % (argv[0])
-    exit
-    
+
+# Read in options
+usage = 'parse.py [options] file1 file2 ...'
+opt_parser = OptionParser()
+opt_parser.add_option('-m', '--model', dest="model_file",
+                  help="read name classifier from MODEL_FILE")
+
+(options, args) = opt_parser.parse_args()
+
+if len(args) == 0:
+    print usage
+    opt_parser.print_help()
+    exit()
+
 # Initialize parser
-parser = BusinessCardParser()
+parser = BusinessCardParser(options.model_file)
 
 # loop through business cards
-for fn in argv[1:]:
+for fn in args:
     try:
         with open(fn) as f:
             text = f.read()

@@ -1,5 +1,5 @@
 import pickle
-
+import random
 class PersonNameClassifier(object):
     """ A probabilistic classifier to determine the likelihood 
         that a string of text is a person's name
@@ -7,6 +7,12 @@ class PersonNameClassifier(object):
     """
 
     def __init__(self,model_file=None):
+        """ Load model from disk
+
+        Args:
+            model_file (str): path to pickled model object
+
+        """
         self.model = None
 
         if model_file:
@@ -20,6 +26,7 @@ class PersonNameClassifier(object):
             model_file (str): path to a model file
 
         """
+        
         try:
             f = open(model_file,'rb')
             self.model = pickle.load(f)
@@ -52,7 +59,7 @@ class PersonNameClassifier(object):
             string (str): a string of text, can be mixed-case
 
         """
-        return 1
+        return random.randint(1,5)
 
     def estimate_model(self, training_files):
         """ Estimate the language model from an array of training samples
@@ -66,8 +73,8 @@ class PersonNameClassifier(object):
 
 
         # 
-        pass
 
 
 
+        
      
