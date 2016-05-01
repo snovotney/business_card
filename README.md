@@ -1,4 +1,4 @@
-This package extractes the name, number and email from the text of
+This package extracts the name, number and email from the text of
 business cards.
 
 The code is implemented for python 2.7 and requires no special dependencies.
