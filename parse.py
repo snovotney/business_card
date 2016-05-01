@@ -34,8 +34,8 @@ for fn in args:
             text = f.read()
             info = parser.getContactInfo(text)
 
-            print "Business card", fn
-            print '-' * 40
+            print "Business card", fn, "\n"
+            print '-' * 40                        
             print text
             print '-' * 40
             
@@ -46,8 +46,8 @@ for fn in args:
             if info.getEmailAddress() is None:
                 print "Could not extract email from %s" % (fn)
 
+            print"Extracted Info:"
             print info
-            print '-' * 40            
     except IOError as e:
         print "I/O Error: ", e
     
