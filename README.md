@@ -50,6 +50,7 @@ Positive Indicators
 - p
 - number
 - direct
+
 Negative Indicators
 - fax
 - cell
