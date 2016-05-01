@@ -11,10 +11,12 @@ The code is implemented for python 2.7 and requires no special dependencies.
 How to run
 ==========
 To parse txt files containing business card output,
-    python parse.py -m data/name.model data/tests/* >
+
+    python parse.py -m data/name.model data/tests/*
 
 To train the name model on different data, 
-    python train_classifier.py -f data/name.model data/train/names.txt >
+
+    python train_classifier.py -f data/name.model data/train/names.txt
 
 Details
 =======
