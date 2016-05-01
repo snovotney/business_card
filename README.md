@@ -3,10 +3,10 @@ business cards.
 
 The code is implemented for python 2.7 and requires no special dependencies.
 
-parse.py - invokes the package to extract info from sample text filess
-train_classifier.py - estimates the person name classifier from training data.
-BusinessCardParser/ - python package implements the solution.
-data/ - training data for name classifier and test data for business cards.
+- parse.py: invokes the package to extract info from sample text filess
+- train_classifier.py: estimates the person name classifier from training data.
+- BusinessCardParser/: python package implements the solution.
+- data/: training data for name classifier and test data for business cards.
 
 How to run
 ==========
